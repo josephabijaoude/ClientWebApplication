@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
-import ClassicFormPage from "./components/test";
+import ClassicFormPage from "./components/HomePage";
 
 ReactDOM.render(<ClassicFormPage />, document.getElementById("root"));
 

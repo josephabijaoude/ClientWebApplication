@@ -13,19 +13,26 @@
 h1 {
   color: #1c87c9;
 }
+div.wrapper {
+            width: 300px;
+            height:300px;
+            border:1px solid black;
+        }
 input {
   padding: 9px;
   font-size: 14px;
   border-radius: 4px;
-  display: inline-block; 
+  display: block; 
   text-align: left;
+  margin: 0 auto;
 }
 label {
   width: 330px;
-  display: inline-block;       
+  display: block;       
   font-size: 30px;    
   font-weight: 700;
   color: #1c87c9;
+  margin: 0 auto;
 }
 select {
   padding: 6px;
@@ -66,6 +73,10 @@ select {
 .btn2:hover::before {
   height: 190%;
 }
+.txt {
+  height: 50px;
+  width: 800px;
+}
     </style><form>
       <input type="button" align="right" value="<Back" onclick="history.back()">
     </form><script src="../jquery/jquery-3.4.1.js" type="text/javascript"></script>
@@ -105,47 +116,27 @@ select {
     </script>
     </head>
     <body>
-      <form action="https://localhost:8081/murexapi/v2/form" name="myForm" method="GET"><div>
+      <form name="myForm"><div>
         <label>Project</label>
         <input name="project" align="center"></div>
-        <div><label>Contact</label>
-        <input name="contact"></div> 
-        <div><label>Customer Reference</label>
-        <input name="customerReference"></div>
         <div><label>Type</label>
-        <input name="type"></div> 
-        <div><label>Sub Type</label>
-        <input name="subType"></div>
+          <select class="form-control" id="type" name="type">
+            <option value="incident">Incident</option>
+            <option value="serviceRequest">Service Request</option>
+            <option value="developementRequest">Development Request</option>
+            <option value="changeRequest">Change Request</option>
+          </select>  
         <div><label>Priority</label>
-        <input name="priority"></div> 
-        <div><label>Provider Group</label>
-        <input name="providerGroup"></div>
+        <select class="form-control" id="priority" name="priority">
+          <option value="P1">P1</option>
+          <option value="P2">P2</option>
+          <option value="P3">P3</option>
+          <option value="P4">P4</option>
+        </select> 
         <div><label>Title</label>
         <input name="title"></div> 
         <div><label>Description</label>
-        <input name="description"></div> 
-        <div><label>Reported Module</label>
-        <input name="reportedModule"></div> 
-        <div><label>Reported Asset Class</label>
-        <input name="reportedAssetClass"></div> 
-        <div><label>Urgent</label>
-        <input name="urgent"></div> 
-        <div><label>Urgent Reason</label>
-        <input name="urgentReason"></div> 
-        <div><label>Environment Type</label>
-        <input name="environmentType"></div> 
-        <div><label>Potential Incident Origin</label>
-        <input name="potentialIncidentOrigin"></div> 
-        <div><label>Regression</label>
-        <input name="regression"></div> 
-        <div><label>Severity</label>
-        <input name="severity"></div> 
-        <div><label>User Defined Fields</label>
-        <input name="userDefinedFields"></div> 
-        <div><label>Participants</label>
-        <input name="participants"></div> 
-        <div><label>Attachments</label>
-        <input name="attachments" type="file"></div> 
+        <textarea class="txt" name="description"></textarea></div> 
         <input value="Submit" type="button" onClick="submitForm()" class="btn btn2">
     </form>
    </body>
