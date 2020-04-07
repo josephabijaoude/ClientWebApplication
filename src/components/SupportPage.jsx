@@ -5,29 +5,32 @@ import * as Msal from "msal";
 
 class SupportPage extends Component {
   state = {
-    token: "",
+    idToken: "",
+    accessToken: "",
   };
-  getToken = (myMSALObj) => {
+  getToken = (idtoken, myMSALObj) => {
     // if the user is already logged in you can acquire a token
     if (myMSALObj.getAccount()) {
       var tokenRequest = {
-        scopes: ["user.read", "mail.send"],
+        scopes: ["api://fb1b1f8b-c282-46bc-87fe-d9e4363a7113/user_access"],
       };
       myMSALObj
         .acquireTokenSilent(tokenRequest)
         .then((response) => {
           // get access token from response
           // response.accessToken
-          console.log(response);
+          this.setState({
+            idToken: idtoken,
+            accessToken: response.accessToken,
+          });
+          console.log(this.state);
         })
         .catch((err) => {
           // could also check if err instance of InteractionRequiredAuthError if you can import the class.
           if (err.name === "InteractionRequiredAuthError") {
             return myMSALObj
               .acquireTokenPopup(tokenRequest)
-              .then((response) => {
-                console.log(response);
-              })
+              .then((response) => {})
               .catch((err) => {
                 // handle error
                 console.log(err);
@@ -78,7 +81,7 @@ class SupportPage extends Component {
     console.log(this.state);
     return tokenResponse;
   };
-  SignInImplicitFlow = () => {
+  SignInImplicitFlow = async () => {
     const msalConfig = {
       auth: {
         clientId: "fb1b1f8b-c282-46bc-87fe-d9e4363a7113",
@@ -92,19 +95,25 @@ class SupportPage extends Component {
       },
     };
     const loginRequest = {
-      scopes: ["openid", "profile", "User.Read"],
+      scopes: [
+        "openid",
+        "profile",
+        "User.Read",
+        "api://fb1b1f8b-c282-46bc-87fe-d9e4363a7113/user_access",
+      ],
     };
     const myMSALObj = new Msal.UserAgentApplication(msalConfig);
-    myMSALObj
+    var idToken = "";
+    await myMSALObj
       .loginPopup(loginRequest)
       .then((loginResponse) => {
-        console.log("id_token acquired at: " + new Date().toString());
-        console.log(loginResponse);
+        idToken = loginResponse.idToken;
+        console.log(idToken);
       })
       .catch((error) => {
         console.log(error);
       });
-    // n this.getToken(myMSALObj);
+    this.getToken(idToken.rawIdToken, myMSALObj);
   };
   render() {
     return (
@@ -113,7 +122,15 @@ class SupportPage extends Component {
           <button onClick={this.SignInImplicitFlow} className="btn btn2">
             Login with Murex
           </button>{" "}
-          <Link to="/support/submit">
+          <Link
+            to={{
+              pathname: "/support/submit",
+              state: {
+                token: this.state.idToken,
+                accessToken: this.state.accessToken,
+              },
+            }}
+          >
             <button className="btn btn2">Submit a new case</button>{" "}
           </Link>
           <form>
@@ -121,7 +138,6 @@ class SupportPage extends Component {
               <button className="btn btn2">Search cases</button>{" "}
             </Link>
           </form>
-          <li>cases</li>
         </div>{" "}
       </React.Fragment>
     );
